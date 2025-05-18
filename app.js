@@ -2,18 +2,18 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
-const connectDB = require('./config/db');
-const errorHandler = require('./middleware/error');
+const connectDB = require('./backend/config/db');
+const errorHandler = require('./backend/middleware/error');
 
 connectDB();
 
 // Route files
-const authRoutes = require('./routes/auth.routes');
-const memeRoutes = require('./routes/meme.routes');
-const feedRoutes = require('./routes/feed.routes');
-const interactionRoutes = require('./routes/interaction.routes');
-const analyticsRoutes = require('./routes/analytics.routes');
-const leaderboardRoutes = require('./routes/leaderboard.routes');
+const authRoutes = require('./backend/routes/auth.routes');
+const memeRoutes = require('./backend/routes/meme.routes');
+const feedRoutes = require('./backend/routes/feed.routes');
+const interactionRoutes = require('./backend/routes/interaction.routes');
+const analyticsRoutes = require('./backend/routes/analytics.routes');
+const leaderboardRoutes = require('./backend/routes/leaderboard.routes');
 
 const app = express();
 
