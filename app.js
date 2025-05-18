@@ -17,9 +17,6 @@ const leaderboardRoutes = require('./backend/routes/leaderboard.routes');
 
 const app = express();
 
-// Connect to database
-connectDB();
-
 // Middleware
 app.use(cors());
 app.use(helmet());
@@ -33,12 +30,17 @@ if (process.env.NODE_ENV === 'development') {
 // Mount routers
 app.use('/api/auth', authRoutes);
 app.use('/api/memes', memeRoutes);
-app.use('/api/memes', feedRoutes);
-app.use('/api/memes', interactionRoutes);
-app.use('/api', analyticsRoutes);
-app.use('/api', leaderboardRoutes);
+app.use('/api/feed', feedRoutes);  
+app.use('/api/interaction', interactionRoutes);  
+app.use('/api/analytics', analyticsRoutes); 
+app.use('/api/leaderboard', leaderboardRoutes);  
 
-// Error handler middleware
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the API!');
+});
+
+
 app.use(errorHandler);
 
 module.exports = app;
