@@ -5,6 +5,8 @@ const helmet = require('helmet');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 
+connectDB();
+
 // Route files
 const authRoutes = require('./routes/auth.routes');
 const memeRoutes = require('./routes/meme.routes');
