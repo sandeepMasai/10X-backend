@@ -14,11 +14,15 @@ const feedRoutes = require('./backend/routes/feed.routes');
 const interactionRoutes = require('./backend/routes/interaction.routes');
 const analyticsRoutes = require('./backend/routes/analytics.routes');
 const leaderboardRoutes = require('./backend/routes/leaderboard.routes');
-
+const templateRoutes = require('./backend/routes/template.routes');
 const app = express();
+
+// Other middleware and setup...
+
 
 // Middleware
 app.use(cors());
+
 app.use(helmet());
 app.use(express.json());
 
@@ -34,6 +38,11 @@ app.use('/api/feed', feedRoutes);
 app.use('/api/interaction', interactionRoutes);  
 app.use('/api/analytics', analyticsRoutes); 
 app.use('/api/leaderboard', leaderboardRoutes);  
+
+
+app.use('/api/templates', templateRoutes);
+
+
 
 
 app.get('/', (req, res) => {
