@@ -5,7 +5,6 @@ exports.createMeme = async (req, res, next) => {
   try {
     const { templateId, topText, bottomText, tags } = req.body;
     
-    // Assuming you have file upload middleware that sets req.files
     const imageUrl = req.files?.image?.[0]?.path;
     const thumbnailUrl = req.files?.thumbnail?.[0]?.path;
     
@@ -82,18 +81,38 @@ exports.getTemplates = async (req, res, next) => {
   }
 };
 
+// exports.getMemeById = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+    
+//     const meme = await memeService.getMemeById(id);
+    
+//     res.status(200).json({
+//       success: true,
+//       data: meme
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+// In your controller
 exports.getMemeById = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const meme = await Meme.findById(req.params.id)
+      .populate('creator', 'username avatar')
+      .populate('template', 'name');
     
-    const meme = await memeService.getMemeById(id);
+    if (!meme) {
+      return res.status(404).json({
+        success: false,
+        error: 'Meme not found'
+      });
+    }
     
-    res.status(200).json({
-      success: true,
-      data: meme
-    });
-  } catch (error) {
-    next(error);
+    res.status(200).json({ success: true, data: meme });
+  } catch (err) {
+    next(err);
   }
 };
 

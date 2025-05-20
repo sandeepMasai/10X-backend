@@ -4,6 +4,7 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
   let token;
   
+  // Check for token in Authorization header
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
@@ -19,7 +20,17 @@ const protect = async (req, res, next) => {
   }
 
   try {
+    // Verify token and ensure it has the expected structure
     const decoded = verifyToken(token);
+    
+    if (!decoded || !decoded.id) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid token structure'
+      });
+    }
+
+    // Find user and attach to request
     const user = await User.findById(decoded.id).select('-password');
     
     if (!user) {
@@ -32,9 +43,11 @@ const protect = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
+    console.error('Auth Middleware Error:', error.message);
     return res.status(401).json({
       success: false,
-      message: 'Not authorized to access this route'
+      message: 'Not authorized to access this route',
+      error: error.message 
     });
   }
 };
